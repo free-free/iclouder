@@ -3,6 +3,12 @@
 import re
 import abc
 import os
+import qiniu
+from qiniu import put_file
+import yaml
+import hashlib
+import time
+from urllib import parse
 
 
 IMG_REG = "(([C-H]:)|[.\\\/]+)[a-z0-9A-Z.\/\\-_=]+.(jpg|png|jpeg|gif)"
@@ -10,8 +16,6 @@ IMG_REG = "(([C-H]:)|[.\\\/]+)[a-z0-9A-Z.\/\\-_=]+.(jpg|png|jpeg|gif)"
 
 class Uploader(metaclass=abc.ABCMeta):
 
-    def __init__(self, **kwargs):
-        self._config = kwargs
 
     @abc.abstractmethod
     def upload(self, path):
@@ -20,21 +24,37 @@ class Uploader(metaclass=abc.ABCMeta):
 
 class QiniuUploader(Uploader):
 
+
     def __init__(self, **kwargs):
-        super(QiniuUploader, self).__init__(**kwargs)
+        super(QiniuUploader, self).__init__()
+        assert 'bucket' in kwargs
+        assert 'access_key' in kwargs
+        assert 'secret_key' in kwargs
+        assert 'bucket_url' in kwargs
+        self._config = kwargs
+        self._ins = qiniu.Auth(self._config.get('access_key'),\
+                self._config.get('secret_key'))
+        self._token = self._ins.upload_token(self._config.get('bucket'))
+
 
     def upload(self, path):
-        print(path)
+        key = hashlib.sha256((path + str(time.time())).encode("utf-8")).hexdigest()
+        key = key + os.path.splitext(path)[1]
+        ret, _ = put_file(self._token, key, path)
+        img_url = parse.urljoin(self._config.get('bucket_url'),ret['key'])
+        print(img_url)
         return os.path.relpath(path)
 
 
 class MDImageReplacer(object):
+
 
     def __init__(self, reg, uploader):
         self._img_reg = reg
         self._md_img_reg = '(!\[[a-z0-9A-Z-_=]+\]\(' + self._img_reg + '\))' + '|' + \
             '(<img\s+src="' + self._img_reg + '"\s+\/?>)'
         self._uploader = uploader
+
 
     def _replace_image(self, matched_img):
         img_path = matched_img.group()
@@ -52,8 +72,10 @@ class MDImageReplacer(object):
         """
         return re.sub(self._img_reg, self._replace_image, img_path)
 
+
     def replace_text(self, text):
         return re.sub(self._md_img_reg, self._replace_image, text)
+
 
     def replace_file(self, in_file, out_file=""):
         if out_file:
@@ -66,6 +88,3 @@ class MDImageReplacer(object):
                 fin.write(self.replace_text(file_content))
 
 
-if __name__ == '__main__':
-    ir = MDImageReplacer(IMG_REG, QiniuUploader())
-    ir.replace_file("./image_uploading_example.md", "hello.md")
