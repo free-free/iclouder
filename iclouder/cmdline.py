@@ -4,6 +4,7 @@
 import os
 import yaml
 from iclouder.commands import Command
+from iclouder.utils import shell_echo
 import fire
 
 
@@ -14,8 +15,8 @@ class CMDExecutor(object):
         settings_file = os.path.join(user_home, '.iclouder_config')
         self._settings = {}
         if not os.path.exists(settings_file):
-            print ("Not Configure settings, please configure\
-                    it first")
+            shell_echo("Not Configure settings, please configureit first",\
+                    "red")
         else:
             with open(settings_file) as f:
                 self._settings = yaml.load(f)
