@@ -14,10 +14,11 @@ class CMDExecutor(object):
         settings_file = os.path.join(user_home, '.iclouder_config')
         self._settings = {}
         if not os.path.exists(settings_file):
-            raise Exception("Not Configure settings, please configure\
+            print ("Not Configure settings, please configure\
                     it first")
-        with open(settings_file) as f:
-            self._settings = yaml.load(f)
+        else:
+            with open(settings_file) as f:
+                self._settings = yaml.load(f)
 
     def run(self, cmd, *params, **kwparams):
         Command.get_cmd_class(cmd)(self._settings).execute(*params, **kwparams)
