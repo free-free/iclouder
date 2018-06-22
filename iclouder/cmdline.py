@@ -11,7 +11,7 @@ class CMDExecutor(object):
 
     def __init__(self):
         user_home = os.path.expanduser('~')
-        settings_file = os.path.join(user_home, '.mdimguploader')
+        settings_file = os.path.join(user_home, '.iclouder_config')
         self._settings = {}
         if not os.path.exists(settings_file):
             raise Exception("Not Configure settings, please configure\
