@@ -50,7 +50,7 @@ class ConfigCommand(Command):
     def __init__(self, *args, **kwargs):
         self._config = {}
         user_home = os.path.expanduser('~')
-        self._cfile_path = os.path.join(user_home, '.mdimguploader')
+        self._cfile_path = os.path.join(user_home, '.iclouder_config')
         print(self, "Welcome to configer....")
 
     def _ask_input(self, var, prompt, _filter=None):
