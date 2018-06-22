@@ -42,8 +42,7 @@ class QiniuUploader(Uploader):
         key = key + os.path.splitext(path)[1]
         ret, _ = put_file(self._token, key, path)
         img_url = parse.urljoin(self._config.get('bucket_url'),ret['key'])
-        print(img_url)
-        return os.path.relpath(path)
+        return img_url
 
 
 class MDImageReplacer(object):
