@@ -23,5 +23,9 @@ class CMDExecutor(object):
         Command.get_cmd_class(cmd)(self._settings).execute(*params, **kwparams)
 
 
-if __name__ == '__main__':
+def execute():
     fire.Fire(CMDExecutor().run)
+
+
+if __name__ == '__main__':
+    execute()
