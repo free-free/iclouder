@@ -86,11 +86,11 @@ class ConfigCommand(Command):
         self._ask_input('backend', 'please input image storage(qiniu)')
         if self._config['backend'].strip() == 'qiniu':
             self._ask_input('bucket', 'please input bucket name')
-            self._ask_input('bucket_url', 'please input bucket url')
+            self._ask_input('bucket_domain', 'please input bucket domain')
             self._ask_input('access_key', 'please input access key')
             self._ask_input('secret_key', 'please input secret key')
             self._config = self._merge_dict(self._config, 'qiniu',
-                                            ('bucket', 'bucket_url', 'access_key',
+                                            ('bucket', 'bucket_domain', 'access_key',
                                              'secret_key'))
         self._dump_configuration()
 
