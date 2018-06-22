@@ -29,7 +29,7 @@ class QiniuUploader(Uploader):
         assert 'bucket' in kwargs
         assert 'access_key' in kwargs
         assert 'secret_key' in kwargs
-        assert 'bucket_url' in kwargs
+        assert 'bucket_domain' in kwargs
         self._config = kwargs
         self._ins = qiniu.Auth(self._config.get('access_key'),
                                self._config.get('secret_key'))
@@ -40,7 +40,7 @@ class QiniuUploader(Uploader):
             (path + str(time.time())).encode("utf-8")).hexdigest()
         key = key + os.path.splitext(path)[1]
         ret, _ = put_file(self._token, key, path)
-        img_url = parse.urljoin(self._config.get('bucket_url'), ret['key'])
+        img_url = parse.urljoin(self._config.get('bucket_domain'), ret['key'])
         return img_url
 
 
