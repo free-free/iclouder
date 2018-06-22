@@ -3,7 +3,7 @@
 
 import os
 import yaml
-from commands import Command
+from iclouder.commands import Command
 import fire
 
 

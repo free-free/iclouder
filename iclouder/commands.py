@@ -4,9 +4,9 @@
 import abc
 import os
 import yaml
-from replacer import MDImageReplacer
-from replacer import QiniuUploader
-from replacer import IMG_REG
+from iclouder.replacer import MDImageReplacer
+from iclouder.replacer import QiniuUploader
+from iclouder.replacer import IMG_REG
 
 
 class Command(object, metaclass=abc.ABCMeta):
