@@ -1,2 +1,4 @@
 qiniu
 fire
+colorama
+termcolor
