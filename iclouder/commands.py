@@ -7,7 +7,7 @@ import yaml
 from iclouder.replacer import MDImageReplacer
 from iclouder.replacer import QiniuUploader
 from iclouder.replacer import IMG_REG
-from iclouder.utils import shell_echo
+from iclouder.utils import color_print, color_input
 
 class Command(object, metaclass=abc.ABCMeta):
 
@@ -62,7 +62,7 @@ class ConfigCommand(Command):
 
 
     def _ask_input(self, var, prompt, _filter=None):
-        text = input(prompt + ' : ')
+        text = color_input(prompt + ' : ', 'green')
         if text:
             if _filter:
                 text = _filter(text)
@@ -96,7 +96,7 @@ class ConfigCommand(Command):
 
 
     def create(self):
-        shell_echo("Welcome to iclouder settings configer:","green")
+        color_print("Welcome to iclouder settings configer:","green")
         self._ask_input('backend', 'please input image storage(qiniu)')
         if self._config['backend'].strip() == 'qiniu':
             self._ask_input('bucket', 'please input bucket name')
