@@ -51,7 +51,7 @@ def _chk_platform(func):
 def color_input(prompt, color, highlight_color=None):
     if isinstance(highlight_color, str):
         highlight_color = 'on_' + highlight_color 
-    input(colored(prompt, color, highlight_color))
+    return input(colored(prompt, color, highlight_color))
 
 
 @_chk_platform
