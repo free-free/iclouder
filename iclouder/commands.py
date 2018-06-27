@@ -9,6 +9,7 @@ from iclouder.replacer import QiniuUploader
 from iclouder.replacer import IMG_REG
 from iclouder.utils import color_print, color_input
 
+
 class Command(object, metaclass=abc.ABCMeta):
 
 
@@ -77,6 +78,13 @@ class ConfigCommand(Command):
             del _dict[key]
         return _dict
 
+    
+    def _filter_domain(self, domain):
+        if not domain.startswith("http://") and \
+            not domain.startswith("https://"):
+            domain = "http://" + domain
+        return domain
+
 
     def _dump_configuration(self):
         with open(self._cfile_path, 'w') as f:
@@ -100,7 +108,8 @@ class ConfigCommand(Command):
         self._ask_input('backend', 'please input image storage(qiniu)')
         if self._config['backend'].strip() == 'qiniu':
             self._ask_input('bucket', 'please input bucket name')
-            self._ask_input('bucket_domain', 'please input bucket domain')
+            self._ask_input('bucket_domain', 'please input bucket domain',\
+                    self._filter_domain)
             self._ask_input('access_key', 'please input access key')
             self._ask_input('secret_key', 'please input secret key')
             self._config = self._merge_dict(self._config, 'qiniu',
