@@ -43,7 +43,7 @@ def _chk_platform(func):
             if not COLORAMA_INITIATION_FLG:
                 colorama_init()
                 COLORAMA_INITIATION_FLG = True
-        func(*args, **kwargs)
+        return func(*args, **kwargs)
     return _wrapper
         
 
