@@ -9,19 +9,42 @@ from qiniu import put_file
 import yaml
 import hashlib
 import time
-from urllib import parse
+import functools
+from base64 import urlsafe_b64encode
+from urllib import parse 
 
 
 # Just match ascii character based path name
 IMG_REG = "(([C-H]:)|[.\\\/]+)[a-z0-9A-Z.\/\\-_=]+.(jpg|png|jpeg|gif)"
 # Fix IMG_REG, support any kind of character as a path name 
-FULL_IMG_REG = "(([C-H]:)|[.\\\/]+)(.*).(jpg|png|jpeg|gif)\??([a-zA-Z0-9]+=[\u4e00-\u9fa5a-zA-Z0-9-_@]+&?)*"
+FULL_IMG_REG = "(([C-H]:)|[.\\\/]+)(.*).(jpg|png|jpeg|gif)\??([a-zA-Z0-9_-]+=[\u4e00-\u9fa5a-zA-Z0-9-_@]+&?)*"
+
+
+def b64encode(string, encode='utf-8'):
+    return urlsafe_b64encode(string.encode(encode)).decode(encode)
+
+
+def image_operation(func):
+    @functools.wraps(func)
+    def _wrapper(self, path):
+        splited_parts = path.split("?")
+        img_url = func(self, splited_parts[0])
+        if len(splited_parts) == 1:
+            return img_url
+        opera_dict = parse.parse_qs(splited_parts[-1])
+        return self.process_image(img_url, opera_dict)
+    return _wrapper
 
 
 class Uploader(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
-    def upload(self, path):
+    def upload(self, img_path):
+        ...
+
+    
+    @abc.abstractmethod
+    def process_image(self, img_url, opera_dict):
         ...
 
 
@@ -32,9 +55,15 @@ class DummyUploader(Uploader):
         pass
 
 
-    def upload(self, path):
-        print("matched_path: " + path)
-        return path
+    @image_operation
+    def upload(self, img_path):
+        print("matched_path: " + img_path)
+        return img_path
+
+
+    def process_image(self, img_url, opera_dict):
+        return img_url
+
 
 
 class QiniuUploader(Uploader):
@@ -52,6 +81,7 @@ class QiniuUploader(Uploader):
         self._token = self._ins.upload_token(self._config.get('bucket'))
 
 
+    @image_operation
     def upload(self, path):
         key = hashlib.sha256(
             (path + str(time.time())).encode("utf-8")).hexdigest()
@@ -59,6 +89,24 @@ class QiniuUploader(Uploader):
         ret, _ = put_file(self._token, key, path)
         img_url = parse.urljoin(self._config.get('bucket_domain'), ret['key'])
         return img_url
+
+
+    def process_image(self, img_url, opera_dict):
+        opera_str = ''
+        if 'water_text' in opera_dict:
+            opera_str += '?watermark/2/text'
+            opera_str += '/' + b64encode(opera_dict.get('water_text', ['@iclouder'])[0])
+            opera_str += '/font'
+            opera_str += '/' + b64encode(opera_dict.get('font', ['宋体'])[0])
+            opera_str += '/fill'
+            opera_str += '/' + b64encode(opera_dict.get('color', ['white'])[0])
+            opera_str += '/fontsize'
+            opera_str += '/' + b64encode(opera_dict.get('fontsize', ['400'])[0])
+            opera_str += '/dissolve/' + opera_dict.get('transparency', ['100'])[0]
+            opera_str += '/dx/' + opera_dict.get('dx', ['10'])[0]
+            opera_str += '/dy/' + opera_dict.get('dy', ['10'])[0]
+            opera_str += '/gravity/' + opera_dict.get('gravity', ['SouthEast'])[0]
+        return img_url + opera_str
 
 
 class MDImageReplacer(object):
