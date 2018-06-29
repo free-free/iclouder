@@ -12,7 +12,10 @@ import time
 from urllib import parse
 
 
+# Just match ascii character based path name
 IMG_REG = "(([C-H]:)|[.\\\/]+)[a-z0-9A-Z.\/\\-_=]+.(jpg|png|jpeg|gif)"
+# Fix IMG_REG, support any kind of character as a path name 
+FULL_IMG_REG = "(([C-H]:)|[.\\\/]+)(.*).(jpg|png|jpeg|gif)\??([a-zA-Z0-9]+=[\u4e00-\u9fa5a-zA-Z0-9-_@]+&?)*"
 
 
 class Uploader(metaclass=abc.ABCMeta):
@@ -22,7 +25,20 @@ class Uploader(metaclass=abc.ABCMeta):
         ...
 
 
+class DummyUploader(Uploader):
+
+
+    def __init__(self, **kwargs):
+        pass
+
+
+    def upload(self, path):
+        print("matched_path: " + path)
+        return path
+
+
 class QiniuUploader(Uploader):
+
 
     def __init__(self, **kwargs):
         super(QiniuUploader, self).__init__()
@@ -35,6 +51,7 @@ class QiniuUploader(Uploader):
                                self._config.get('secret_key'))
         self._token = self._ins.upload_token(self._config.get('bucket'))
 
+
     def upload(self, path):
         key = hashlib.sha256(
             (path + str(time.time())).encode("utf-8")).hexdigest()
@@ -46,11 +63,14 @@ class QiniuUploader(Uploader):
 
 class MDImageReplacer(object):
 
+
     def __init__(self, reg, uploader):
         self._img_reg = reg
-        self._md_img_reg = '(!\[[a-z0-9A-Z-_=]+\]\(' + self._img_reg + '\))' + '|' + \
-            '(<img\s+src="' + self._img_reg + '"\s+\/?>)'
+        self._md_img_reg = re.compile('(!\[(.*)\]\(' + self._img_reg + '\))' + '|' + \
+            '(<img\s+src="' + self._img_reg + '"\/?>)')
+        self._img_reg = re.compile(self._img_reg)
         self._uploader = uploader
+
 
     def _replace_image(self, matched_img):
         img_path = matched_img.group()
@@ -68,8 +88,10 @@ class MDImageReplacer(object):
         """
         return re.sub(self._img_reg, self._replace_image, img_path)
 
+
     def replace_text(self, text):
         return re.sub(self._md_img_reg, self._replace_image, text)
+
 
     def replace_file(self, in_file, out_file=""):
         if out_file:

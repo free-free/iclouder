@@ -6,7 +6,7 @@ import os
 import yaml
 from iclouder.replacer import MDImageReplacer
 from iclouder.replacer import QiniuUploader
-from iclouder.replacer import IMG_REG
+from iclouder.replacer import FULL_IMG_REG
 from iclouder.utils import color_print, color_input
 
 
@@ -46,7 +46,7 @@ class ReplaceUrlCommand(Command):
     def execute(self, in_file, out_file=""):
         if self._settings.get('backend') == 'qiniu':
             uploader = QiniuUploader(**self._settings['qiniu'])
-        ir = MDImageReplacer(IMG_REG, uploader)
+        ir = MDImageReplacer(FULL_IMG_REG, uploader)
         ir.replace_file(in_file, out_file)
 
 
