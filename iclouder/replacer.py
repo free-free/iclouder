@@ -17,7 +17,7 @@ from urllib import parse
 # Just match ascii character based path name
 IMG_REG = "(([C-H]:)|[.\\\/]+)[a-z0-9A-Z.\/\\-_=]+.(jpg|png|jpeg|gif)"
 # Fix IMG_REG, support any kind of character as a path name 
-FULL_IMG_REG = "(([C-H]:)|[.\\\/]+)(.*).(jpg|png|jpeg|gif)\??([a-zA-Z0-9_-]+=[\u4e00-\u9fa5a-zA-Z0-9-_@]+&?)*"
+FULL_IMG_REG = "(([C-H]:)|[.\\\/]+)(.*?).(jpg|png|jpeg|gif)\??([a-zA-Z0-9_-]+=[\u4e00-\u9fa5a-zA-Z0-9-_@\/\\.]+&?)*"
 
 
 def b64encode(string, encode='utf-8'):
@@ -28,6 +28,7 @@ def image_operation(func):
     @functools.wraps(func)
     def _wrapper(self, path):
         splited_parts = path.split("?")
+        print(splited_parts)
         img_url = func(self, splited_parts[0])
         if len(splited_parts) == 1:
             return img_url
@@ -93,8 +94,16 @@ class QiniuUploader(Uploader):
 
     def process_image(self, img_url, opera_dict):
         opera_str = ''
+        if 'water_text' in opera_dict and 'water_image' in opera_dict:
+            opera_str = '?watermark/3'
+        elif 'water_image' in opera_dict:
+            opera_str = '?watermark/1'
+        elif 'water_text' in opera_dict:
+            opera_str = '?watermark/2'
+        else:
+            opera_str = ''
         if 'water_text' in opera_dict:
-            opera_str += '?watermark/2/text'
+            opera_str += '/text'
             opera_str += '/' + b64encode(opera_dict.get('water_text', ['@iclouder'])[0])
             opera_str += '/font'
             opera_str += '/' + b64encode(opera_dict.get('font', ['宋体'])[0])
@@ -102,10 +111,25 @@ class QiniuUploader(Uploader):
             opera_str += '/' + b64encode(opera_dict.get('color', ['white'])[0])
             opera_str += '/fontsize'
             opera_str += '/' + b64encode(opera_dict.get('fontsize', ['400'])[0])
-            opera_str += '/dissolve/' + opera_dict.get('transparency', ['100'])[0]
-            opera_str += '/dx/' + opera_dict.get('dx', ['10'])[0]
-            opera_str += '/dy/' + opera_dict.get('dy', ['10'])[0]
-            opera_str += '/gravity/' + opera_dict.get('gravity', ['SouthEast'])[0]
+            opera_str += '/dissolve/' + opera_dict.get('t_dissolve', ['100'])[0]
+            opera_str += '/dx/' + opera_dict.get('t_dx', ['10'])[0]
+            opera_str += '/dy/' + opera_dict.get('t_dy', ['10'])[0]
+            opera_str += '/gravity/' + opera_dict.get('t_gravity', ['SouthEast'])[0]
+        if 'water_image' in opera_dict:
+            image_url = opera_dict.get('water_image',[''])[0]
+            if not image_url:
+                return img_url + opera_str
+            if not image_url.startswith("http://") \
+                    and not image_url.startswith("https://"):
+                image_url = self.upload(image_url)
+            opera_str += '/image'
+            opera_str += '/' + b64encode(image_url)
+            opera_str += '/dissolve/' + opera_dict.get('i_dissolve', ['100'])[0]
+            opera_str += '/dx/' + opera_dict.get('i_dx', ['10'])[0]
+            opera_str += '/dy/' + opera_dict.get('i_dy', ['10'])[0]
+            opera_str += '/gravity/' + opera_dict.get('i_gravity', ['SouthEast'])[0]
+            opera_str += '/ws/' + opera_dict.get('ws', ['1'])[0]
+            opera_str += '/wst/' + opera_dict.get('wst', ['0'])[0]
         return img_url + opera_str
 
 
