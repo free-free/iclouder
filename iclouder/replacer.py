@@ -17,7 +17,7 @@ from urllib import parse
 # Just match ascii character based path name
 IMG_REG = "(([C-H]:)|[.\\\/]+)[a-z0-9A-Z.\/\\-_=]+.(jpg|png|jpeg|gif)"
 # Fix IMG_REG, support any kind of character as a path name 
-FULL_IMG_REG = "(([C-H]:)|[.\\\/]+)(.*?).(jpg|png|jpeg|gif)\??([a-zA-Z0-9_-]+=[\u4e00-\u9fa5a-zA-Z0-9-_@\/\\.]+&?)*"
+FULL_IMG_REG = "(([C-H]:)|[.\\\/]+)(.*?).(jpg|png|jpeg|gif)\??([a-zA-Z0-9_-]+=[\u4e00-\u9fa5a-zA-Z0-9-_@\/\\.:]+&?)*"
 
 
 def b64encode(string, encode='utf-8'):
@@ -28,7 +28,6 @@ def image_operation(func):
     @functools.wraps(func)
     def _wrapper(self, path):
         splited_parts = path.split("?")
-        print(splited_parts)
         img_url = func(self, splited_parts[0])
         if len(splited_parts) == 1:
             return img_url
@@ -109,21 +108,20 @@ class QiniuUploader(Uploader):
             opera_str += '/' + b64encode(opera_dict.get('font', ['宋体'])[0])
             opera_str += '/fill'
             opera_str += '/' + b64encode(opera_dict.get('color', ['white'])[0])
-            opera_str += '/fontsize'
-            opera_str += '/' + b64encode(opera_dict.get('fontsize', ['400'])[0])
+            opera_str += '/fontsize/' + opera_dict.get('fontsize', ['500'])[0]
             opera_str += '/dissolve/' + opera_dict.get('t_dissolve', ['100'])[0]
             opera_str += '/dx/' + opera_dict.get('t_dx', ['10'])[0]
             opera_str += '/dy/' + opera_dict.get('t_dy', ['10'])[0]
             opera_str += '/gravity/' + opera_dict.get('t_gravity', ['SouthEast'])[0]
         if 'water_image' in opera_dict:
-            image_url = opera_dict.get('water_image',[''])[0]
-            if not image_url:
+            water_image_url = opera_dict.get('water_image',[''])[0]
+            if not water_image_url:
                 return img_url + opera_str
-            if not image_url.startswith("http://") \
-                    and not image_url.startswith("https://"):
-                image_url = self.upload(image_url)
+            if not water_image_url.startswith("http://") \
+                    and not water_image_url.startswith("https://"):
+                water_image_url = self.upload(water_image_url)
             opera_str += '/image'
-            opera_str += '/' + b64encode(image_url)
+            opera_str += '/' + b64encode(water_image_url)
             opera_str += '/dissolve/' + opera_dict.get('i_dissolve', ['100'])[0]
             opera_str += '/dx/' + opera_dict.get('i_dx', ['10'])[0]
             opera_str += '/dy/' + opera_dict.get('i_dy', ['10'])[0]
