@@ -26,7 +26,7 @@ setup(
     author_email="infinite.ft@gmail.com",
     description="upload markdown document local \
             image and replace path automatically",
-    long_description=read_file("README.md"),
+    long_description=read_file("README.rst"),
     url="https://github.com/free-free/mdimguploader",
     license="MIT",
     packages=find_packages(),
