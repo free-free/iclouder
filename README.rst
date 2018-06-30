@@ -116,31 +116,31 @@ iclouder:
 
 .. code-block:: markdown
 
-   ![image](images/watermark.jpg?water_text=@我的水印&fontsize=500&font=宋体&color=#ffffff&t_dissolve=100&t_dx=10&t_dy=10&gravity=SouthEast)
+   ![image1](images/image1.jpg?water_text=@我的水印&fontsize=500&font=宋体&color=#ffffff&t_dissolve=100&t_dx=10&t_dy=10&gravity=SouthEast)
 
 
 **(2)水印参数说明:**
 
 
-:water_mark
+:water_mark:
         水印文字，必填
 
-:font
+:font:
         文字字体，默认为宋体，可选值请参看 `这里 <https://developer.qiniu.com/dora/kb/1379/image-and-video-text-watermarking-support-font-list>`_.
 
-:color
+:color:
         水印文字颜色，默认为white，可以是颜色名称(例red)或者十六进制(例如#ffffff).
 
-:t_dissolve
+:t_dissolve:
         透明度，默认为100，可选值为0-100,100为完全不透明.
 
-:t_dx
+:t_dx:
         横边距，默认为10，单位为像素(px)
 
-:t_dy
+:t_dy:
         纵边距，默认为10，单位为像素(px)
 
-:fontsize
+:fontsize:
         文字大小，默认为500，单位为缇，等于1/20磅，参考DPI为72
 
 :gravity:
@@ -164,6 +164,68 @@ iclouder:
    ![image1](http://oz7mpt8xg.bkt.clouddn.com/f744ab38c7730ab3e82ed46382c709c3a6e5154aa4a537854e1c58ef85e5751c.jpg?watermark/2/text/QOmSoumTgeS-oA==/font/5a6L5L2T/fill/d2hpdGU=/fontsize/500/dissolve/100/dx/10/dy/10/gravity/SouthEast)
 
 .. image:: http://oz7mpt8xg.bkt.clouddn.com/f744ab38c7730ab3e82ed46382c709c3a6e5154aa4a537854e1c58ef85e5751c.jpg?watermark/2/text/QOmSoumTgeS-oA==/font/5a6L5L2T/fill/d2hpdGU=/fontsize/500/dissolve/100/dx/10/dy/10/gravity/SouthEast
+
+
+1.图片水印(watermark image)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**(1)基本语法:**
+
+
+水印相关信息通过query string 的方式添加在图片链接后面
+
+.. code-block:: markdown
+
+   ![image2](images/image2.jpg?water_image=images/groot.jpg&t_dissolve=100&t_dx=10&t_dy=10&gravity=SouthEast&ws=0.1&wst=0)
+
+
+**(2)水印参数说明:**
+
+
+:water_image:
+        水印图片链接，必填，可以是本地图片也是网络图片
+
+
+:t_dissolve:
+        透明度，默认为100，可选值为0-100,100为完全不透明.
+
+:t_dx:
+        横边距，默认为10，单位为像素(px)
+
+:t_dy:
+        纵边距，默认为10，单位为像素(px)
+
+
+:gravity:
+        水印位置，默认为SouthEast，具体查看 `这里 <https://developer.qiniu.com/dora/manual/1316/image-watermarking-processing-watermark#watermark-anchor-spec>`_
+
+:ws:
+        水印图片自适应原图的短边比例，默认值为0.1，ws的取值范围为0-1。具体是指水印图片保持原比例，并短边缩放到原图短边*ws
+
+
+:wst:
+        水印图片自适应原图的类型，取值0、1、2、3分别表示为自适应原图的短边、长边、宽、高，默认值为0
+        例如：原图大小为250x250，水印图片大小为91x61，如果ws=1，那么最终水印图片的大小为：372x250。
+
+
+**(3)例子(examples):**
+
+.. code-block:: markdown
+
+    ![image2](images/image2.jpg?water_image=images/groot.jpg&ws=0.2)
+
+ 
+.. image:: images/image2.jpg
+        
+
+替换后(After replacement)
+
+.. code-block:: markdown
+
+        ![image2](http://oz7mpt8xg.bkt.clouddn.com/00ee861219775104ad2a1c40f40a616bd761a457fb02f854cc3466c62b30fe6c.jpg?watermark/1/image/aHR0cDovL296N21wdDh4Zy5ia3QuY2xvdWRkbi5jb20vYTdhNGY1ZDA4NTNhNDkzNDdiY2E5ZGZjNjQwYzNiZDMzZmZhY2Y3MDg0ODk2MGUwNzJhYzlhMzNhNDEyMDNkZC5qcGc=/dissolve/100/dx/10/dy/10/gravity/SouthEast/ws/0.2/wst/0)
+
+
+.. image:: http://oz7mpt8xg.bkt.clouddn.com/00ee861219775104ad2a1c40f40a616bd761a457fb02f854cc3466c62b30fe6c.jpg?watermark/1/image/aHR0cDovL296N21wdDh4Zy5ia3QuY2xvdWRkbi5jb20vYTdhNGY1ZDA4NTNhNDkzNDdiY2E5ZGZjNjQwYzNiZDMzZmZhY2Y3MDg0ODk2MGUwNzJhYzlhMzNhNDEyMDNkZC5qcGc=/dissolve/100/dx/10/dy/10/gravity/SouthEast/ws/0.2/wst/0
 
 
 LICENSE
