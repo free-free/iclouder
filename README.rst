@@ -1,13 +1,18 @@
-iclouder: markdown document's local image uploader and links replacer
----------------------------------------------------------------------
+iclouder:
+----------------
+
+    markdown document's local image uploader and links replacer
+
+
 
 .. image:: https://img.shields.io/dub/l/vibe-d.svg
   :target: LICENSE
   :align: left
 
 
+
 简介(description)
--------
+----------------------
 
 实现markdown文档中的本地图片自动上传并自动替换图片链接。
 
@@ -17,8 +22,11 @@ iclouder: markdown document's local image uploader and links replacer
 
 
 **image storage backend** : qiniu
+
 **python** : >=3.4
+
 **platforms** : Linux(tested), windows(not testing), MacOs(not testing)
+
 **version** : 0.0.1
 
 
@@ -34,11 +42,13 @@ iclouder: markdown document's local image uploader and links replacer
 使用(usage)
 ------------
 
+
 1. 创建配置(Create the configuration)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 .. code-block:: bash
+
     $ iclouder config create
 
 
@@ -50,8 +60,8 @@ iclouder: markdown document's local image uploader and links replacer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
-   $ iclouder replace --in-file input.md --out-file out.md
 
+   $ iclouder replace --in-file input.md --out-file out.md
 
 
 或者(or)
@@ -59,7 +69,7 @@ iclouder: markdown document's local image uploader and links replacer
 
 .. code-block:: bash
 
-    $ iclouder replace --in-file input.md % 在原文件上进行修改(Modification on original file)
+    $ iclouder replace --in-file input.md % 在原文件上进行修改(modify on the original files)
 
 
 For example
@@ -88,6 +98,45 @@ For example
     <img src="http://oz7mpt8xg.bkt.clouddn.com/e6524ccb0455b98200f9efa29de7209ebc5cb13c5d00507ca5d56733757b2b93.png" />
 
 
+额外功能(Extra)
+----------------
+
+**iclouder** 除了能够上传本地图片并替换图片链接之外，还可以对图片打水印.
+
+1.文字水印(watermark text)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+(1) 基本语法
+````````````
+
+水印相关信息通过query string 的方式添加在图片链接后面
+
+.. cock-block:: markdown
+
+   ![image](images/watermark.jpg?water_text=@我的水印&fontsize=500&font=宋体&color=#ffffff&t_dissolve=100&t_dx=10&t_dy=10&gravity=SouthEast)
+
+(2) 水印参数说明
+``````````````````
+
++---------------+------------+----------+-----------------------------------------+
+|参数名         | 必填       |默认值    | 说明                                    |
++===============+============+==========+=========================================+
+|water_mark     | 是         |          | 水印文字                                |
++---------------+------------+----------+-----------------------------------------+
+|font           | 否         | 宋体     | 文字字体，可选值                        |
++---------------+------------+----------+-----------------------------------------+
+|color          | 否         | white    | 可以是颜色(red)名称或者十六进制(#ffffff)|
++---------------+------------+----------+-----------------------------------------+
+|t_dissolve     | 否         | 100      | 透明度,可选值0-100,100为完全不透明      |
++---------------+------------+----------+-----------------------------------------+
+|t_dx           | 否         | 10       | 横边距,单位:像素(px)                    |
++---------------+------------+----------+-----------------------------------------+
+|t_dy           | 否         | 10       | 纵边距,单位;像素(px)                    |
++---------------+------------+----------+-----------------------------------------+
+|fontsize       | 否         | 500      | 单位：缇，等于1/20磅，参考DPI为72       |
++---------------+------------+----------+-----------------------------------------+
+|gravity        | 否         |SouthEast | 水印位置,具体参数参考`这里 <https://developer.qiniu.com/dora/manual/1316/image-watermarking-processin|               |            |          |g-watermark#watermark-anchor-spec>`_     |
++---------------+------------+----------+-----------------------------------------+
 
 LICENSE
 -------------------
