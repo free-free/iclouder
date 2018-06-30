@@ -17,7 +17,7 @@ from urllib import parse
 # Just match ascii character based path name
 IMG_REG = "(([C-H]:)|[.\\\/]+)[a-z0-9A-Z.\/\\-_=]+.(jpg|png|jpeg|gif)"
 # Fix IMG_REG, support any kind of character as a path name 
-FULL_IMG_REG = "(([C-H]:)|[.\\\/]+)(.*?).(jpg|png|jpeg|gif)\??([a-zA-Z0-9_-]+=[\u4e00-\u9fa5a-zA-Z0-9-_@\/\\.:]+&?)*"
+FULL_IMG_REG = "(([C-H]:)|[.\\\/]+)(.*?).(jpg|png|jpeg|gif)\??([a-zA-Z0-9_-]+=[\u4e00-\u9fa5a-zA-Z0-9-_@\/\\.:#]+&?)*"
 
 
 def b64encode(string, encode='utf-8'):
