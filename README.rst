@@ -62,9 +62,11 @@ iclouder: markdown document's local image uploader and links replacer
     $ iclouder replace --in-file input.md % 在原文件上进行修改(Modification on original file)
 
 
-例如(For example):
+For example
+
 
 替换前(Before replacement)
+
 .. code-block:: markdown
 
     图像上传(image uploading)
@@ -76,6 +78,7 @@ iclouder: markdown document's local image uploader and links replacer
 
 
 替换后(After replacement)
+
 .. code-block:: markdown
 
     图像上传(image uploading)
