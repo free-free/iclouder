@@ -4,6 +4,7 @@
 
 
 
+
 iclouder:
 ----------------
 
@@ -11,14 +12,14 @@ iclouder:
 
 
 
-
-简介(description)
+一、简介(description)
 ----------------------
 
 实现markdown文档中的本地图片自动上传并自动替换图片链接。
 
 
-支持说明(support description)
+
+二、支持说明(support description)
 -------------------------------
 
 
@@ -31,7 +32,7 @@ iclouder:
 **version** : 0.0.1
 
 
-安装(installation)
+三、安装(installation)
 ---------------------
 
 .. code-block:: bash
@@ -40,7 +41,8 @@ iclouder:
 
 
 
-使用(usage)
+
+四、用法(usage)
 ------------
 
 
@@ -72,10 +74,7 @@ iclouder:
 
     $ iclouder replace --in-file input.md % 在原文件上进行修改(modify on the original files)
 
-
-For example
-
-
+:For example
 替换前(Before replacement)
 
 .. code-block:: markdown
@@ -100,8 +99,9 @@ For example
 
 
 
-额外功能(Extra)
+五、额外功能(Extra)
 ----------------
+
 
 **iclouder** 除了能够上传本地图片并替换图片链接之外，还可以对图片打水印.
 
@@ -109,7 +109,7 @@ For example
 1.文字水印(watermark text)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**基本语法**
+**(1)基本语法:**
 
 
 水印相关信息通过query string 的方式添加在图片链接后面
@@ -118,32 +118,52 @@ For example
 
    ![image](images/watermark.jpg?water_text=@我的水印&fontsize=500&font=宋体&color=#ffffff&t_dissolve=100&t_dx=10&t_dy=10&gravity=SouthEast)
 
-**水印参数说明**
+
+**(2)水印参数说明:**
 
 
-:water_mark:     
+:water_mark
         水印文字，必填
 
-:font:
+:font
         文字字体，默认为宋体，可选值请参看 `这里 <https://developer.qiniu.com/dora/kb/1379/image-and-video-text-watermarking-support-font-list>`_.
 
-:color:
+:color
         水印文字颜色，默认为white，可以是颜色名称(例red)或者十六进制(例如#ffffff).
 
-:t_dissolve:
+:t_dissolve
         透明度，默认为100，可选值为0-100,100为完全不透明.
 
-:t_dx:
+:t_dx
         横边距，默认为10，单位为像素(px)
 
-:t_dy:
+:t_dy
         纵边距，默认为10，单位为像素(px)
 
-:fontsize:
+:fontsize
         文字大小，默认为500，单位为缇，等于1/20磅，参考DPI为72
 
 :gravity:
         水印位置，默认为SouthEast，具体查看 `这里 <https://developer.qiniu.com/dora/manual/1316/image-watermarking-processing-watermark#watermark-anchor-spec>`_
+
+
+**(3)例子(examples):**
+
+.. code-block:: markdown
+
+    ![image1](images/image1.jpg?water_text=@钢铁侠)
+
+ 
+.. image:: images/image1.jpg
+        
+
+替换后(After replacement)
+
+.. code-block:: markdown
+
+   ![image1](http://oz7mpt8xg.bkt.clouddn.com/f744ab38c7730ab3e82ed46382c709c3a6e5154aa4a537854e1c58ef85e5751c.jpg?watermark/2/text/QOmSoumTgeS-oA==/font/5a6L5L2T/fill/d2hpdGU=/fontsize/500/dissolve/100/dx/10/dy/10/gravity/SouthEast)
+
+.. image:: http://oz7mpt8xg.bkt.clouddn.com/f744ab38c7730ab3e82ed46382c709c3a6e5154aa4a537854e1c58ef85e5751c.jpg?watermark/2/text/QOmSoumTgeS-oA==/font/5a6L5L2T/fill/d2hpdGU=/fontsize/500/dissolve/100/dx/10/dy/10/gravity/SouthEast
 
 
 LICENSE
