@@ -1,16 +1,16 @@
 iclouder: markdown document's local image uploader and links replacer
-==============
+---------------------------------------------------------------------
 
-简介
+简介(description)
 -------
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实现markdown文档中的本地图片自动上传并自动替换图片链接。
+实现markdown文档中的本地图片自动上传并自动替换图片链接。
 
 
 支持说明(support description)
 -------------------------------
 
-**图片存储支持(image storage backend)** : qiuiu
+**图片存储支持(image storage backend)** : qiniu
 
 **python** : >=3.4
 
@@ -18,8 +18,10 @@ iclouder: markdown document's local image uploader and links replacer
 安装(installation)
 ---------------------
 
-.. code-block:: sh
+.. code-block:: bash
+
     $ pip install iclouder
+
 
 
 使用(usage)
@@ -28,28 +30,38 @@ iclouder: markdown document's local image uploader and links replacer
 1. 创建配置(Initiate the configuration)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+
 .. code-block:: bash
     $ iclouder config create
 
 
+
 执行上面命令后，按照提示输入相关配置信息(After the execution of above code, type the related information according to prompt)
+
 
 2. 上传并替换图片路径(upload and replace local image)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
+
     $ iclouder replace --in-file input.md --out-file out.md
 
-或者(or)
-.. code-block:: bash
-$ iclouder replace --in-file input.md % 在原文件上进行修改(Modification on original file)
 
+
+
+或者(or)
+
+
+.. code-block:: bash
+
+    $ iclouder replace --in-file input.md % 在原文件上进行修改(Modification on original file)
 
 例如(For example)：
 
 替换前(Before replacement)
 
 .. code-block:: markdown
+
 图像上传(image uploading)
 
 示例图像，示例图像(image examples)
@@ -64,6 +76,7 @@ $ iclouder replace --in-file input.md % 在原文件上进行修改(Modification
 替换后(After replacement)
 
 .. code-block:: markdown
+
 图像上传(image uploading)
 
 示例图像，示例图像(image examples)
