@@ -4,6 +4,7 @@
 import abc
 import os
 import yaml
+import json
 from iclouder.replacer import MDImageReplacer
 from iclouder.replacer import QiniuUploader
 from iclouder.replacer import FULL_IMG_REG
@@ -43,7 +44,7 @@ class ReplaceUrlCommand(Command):
         self._settings = settings
 
 
-    def execute(self, in_file, out_file=""):
+    def execute(self, in_file, out_file="", *args, **kwargs):
         if self._settings.get('backend') == 'qiniu':
             uploader = QiniuUploader(**self._settings['qiniu'])
         ir = MDImageReplacer(FULL_IMG_REG, uploader)
@@ -97,13 +98,19 @@ class ConfigCommand(Command):
         return self._config
 
 
-    def execute(self, opera):
+    def execute(self, opera, *args, **kwargs):
+        config_file = kwargs.get("with-config") or kwargs.get("with_config")
+        # If one assigns --with-config or with_config with a file name
+        # in command line interface, then it would read configurations from 
+        # this new file or write configurations to the new file.
+        if config_file:
+            self._cfile_path = config_file
         if hasattr(self, opera):
             opera_fn = getattr(self, opera)
-            return opera_fn()
+            return opera_fn(*args, **kwargs)
 
 
-    def create(self):
+    def create(self, *args, **kwargs):
         color_print("Welcome to iclouder settings configer:","green")
         self._ask_input('backend', 'please input image storage(qiniu)')
         if self._config['backend'].strip() == 'qiniu':
@@ -116,5 +123,26 @@ class ConfigCommand(Command):
                                             ('bucket', 'bucket_domain', 'access_key',
                                              'secret_key'))
         self._dump_configuration()
+
+    
+    def print(self, to_file="", tee=False, *args, **kwargs):
+        config_str = ""
+        with open(self._cfile_path) as f:
+            config_str = yaml.load(f)
+        if not to_file:
+            # print configurations directly in the  command line interface
+            config_str = json.dumps(config_str, sort_keys=True, indent=4)
+            color_print(config_str, "green")
+        else:
+            # print configuration to the file
+            if tee:
+                color_print(json.dumps(config_str, sort_keys=True, indent=4), "green")
+            with open(to_file, "w+") as f:
+                yaml.dump(config_str, f, default_flow_style=False)
+            color_print("OK!", "blue")
+            
+            
+            
+
 
 
