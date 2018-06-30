@@ -143,7 +143,7 @@ iclouder:
 :fontsize:
         文字大小，默认为500，单位为缇，等于1/20磅，参考DPI为72
 
-:gravity:
+:t_gravity:
         水印位置，默认为SouthEast，具体查看 `这里 <https://developer.qiniu.com/dora/manual/1316/image-watermarking-processing-watermark#watermark-anchor-spec>`_
 
 
@@ -166,7 +166,7 @@ iclouder:
 .. image:: http://oz7mpt8xg.bkt.clouddn.com/f744ab38c7730ab3e82ed46382c709c3a6e5154aa4a537854e1c58ef85e5751c.jpg?watermark/2/text/QOmSoumTgeS-oA==/font/5a6L5L2T/fill/d2hpdGU=/fontsize/500/dissolve/100/dx/10/dy/10/gravity/SouthEast
 
 
-1.图片水印(watermark image)
+2.图片水印(watermark image)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **(1)基本语法:**
@@ -186,17 +186,17 @@ iclouder:
         水印图片链接，必填，可以是本地图片也是网络图片
 
 
-:t_dissolve:
+:i_dissolve:
         透明度，默认为100，可选值为0-100,100为完全不透明.
 
-:t_dx:
+:i_dx:
         横边距，默认为10，单位为像素(px)
 
-:t_dy:
+:i_dy:
         纵边距，默认为10，单位为像素(px)
 
 
-:gravity:
+:i_gravity:
         水印位置，默认为SouthEast，具体查看 `这里 <https://developer.qiniu.com/dora/manual/1316/image-watermarking-processing-watermark#watermark-anchor-spec>`_
 
 :ws:
@@ -226,6 +226,30 @@ iclouder:
 
 
 .. image:: http://oz7mpt8xg.bkt.clouddn.com/00ee861219775104ad2a1c40f40a616bd761a457fb02f854cc3466c62b30fe6c.jpg?watermark/1/image/aHR0cDovL296N21wdDh4Zy5ia3QuY2xvdWRkbi5jb20vYTdhNGY1ZDA4NTNhNDkzNDdiY2E5ZGZjNjQwYzNiZDMzZmZhY2Y3MDg0ODk2MGUwNzJhYzlhMzNhNDEyMDNkZC5qcGc=/dissolve/100/dx/10/dy/10/gravity/SouthEast/ws/0.2/wst/0
+
+
+3. 图片+文字水印(watermark image and text)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+只需要将图片和文字水印的参数拼接起来即可
+
+**(1)例子(examples):**
+
+.. code-block:: markdown
+
+    ![image3](images/image3.jpg?water_text=@文字水印&color=#2233FF&t_gravity=NorthWest&fontsize=800&water_image=images/groot.jpg&ws=0.2)
+
+.. image:: images/image2.jpg
+
+
+替换后(After replacement)
+
+.. code-block:: markdown
+
+        ![image3](http://oz7mpt8xg.bkt.clouddn.com/5af9b77318c16af127f9e61fbed6b38c80e83d3244c1999ea2edff293d90f095.jpg?watermark/3/text/QOaWh-Wtl-awtOWNsA==/font/5a6L5L2T/fill/IzIyMzNGRg==/fontsize/800/dissolve/100/dx/10/dy/10/gravity/NorthWest/image/aHR0cDovL296N21wdDh4Zy5ia3QuY2xvdWRkbi5jb20vNTk4N2Q4MThmYTY4OWU3ZGRlMTk4NDhlYjg0MzE3YWFhYWJkOTc0MGI0ZmVjZmE4NzQ2OTZhMzgyYmE0MzYwMi5qcGc=/dissolve/100/dx/10/dy/10/gravity/SouthEast/ws/0.2/wst/0)
+
+.. image:: http://oz7mpt8xg.bkt.clouddn.com/5af9b77318c16af127f9e61fbed6b38c80e83d3244c1999ea2edff293d90f095.jpg?watermark/3/text/QOaWh-Wtl-awtOWNsA==/font/5a6L5L2T/fill/IzIyMzNGRg==/fontsize/800/dissolve/100/dx/10/dy/10/gravity/NorthWest/image/aHR0cDovL296N21wdDh4Zy5ia3QuY2xvdWRkbi5jb20vNTk4N2Q4MThmYTY4OWU3ZGRlMTk4NDhlYjg0MzE3YWFhYWJkOTc0MGI0ZmVjZmE4NzQ2OTZhMzgyYmE0MzYwMi5qcGc=/dissolve/100/dx/10/dy/10/gravity/SouthEast/ws/0.2/wst/0
+
 
 
 LICENSE
