@@ -239,7 +239,7 @@ iclouder:
 
     ![image3](images/image3.jpg?water_text=@文字水印&color=#2233FF&t_gravity=NorthWest&fontsize=800&water_image=images/groot.jpg&ws=0.2)
 
-.. image:: images/image2.jpg
+.. image:: images/image3.jpg
 
 
 替换后(After replacement)
