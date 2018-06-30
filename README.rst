@@ -56,7 +56,7 @@ iclouder:
 
 
 
-执行上面命令后，按照提示输入相关配置信息(After the execution of above code, type the related information according to prompt)
+执行上面命令后，按照提示输入相关配置信息(After the execution of above code, type the related information according to prompt).
 
 
 2. 上传并替换图片路径(upload and replace local image)
@@ -67,14 +67,14 @@ iclouder:
    $ iclouder replace --in-file input.md --out-file out.md
 
 
-或者(or)
+or
 
 
 .. code-block:: bash
 
     $ iclouder replace --in-file input.md % 在原文件上进行修改(modify on the original files)
 
-:For example
+For example
 替换前(Before replacement)
 
 .. code-block:: markdown
@@ -250,6 +250,76 @@ iclouder:
 
 .. image:: http://oz7mpt8xg.bkt.clouddn.com/5af9b77318c16af127f9e61fbed6b38c80e83d3244c1999ea2edff293d90f095.jpg?watermark/3/text/QOaWh-Wtl-awtOWNsA==/font/5a6L5L2T/fill/IzIyMzNGRg==/fontsize/800/dissolve/100/dx/10/dy/10/gravity/NorthWest/image/aHR0cDovL296N21wdDh4Zy5ia3QuY2xvdWRkbi5jb20vNTk4N2Q4MThmYTY4OWU3ZGRlMTk4NDhlYjg0MzE3YWFhYWJkOTc0MGI0ZmVjZmE4NzQ2OTZhMzgyYmE0MzYwMi5qcGc=/dissolve/100/dx/10/dy/10/gravity/SouthEast/ws/0.2/wst/0
 
+
+六、命令和相关参数details
+---------------------------
+
+1. config(配置)
+^^^^^^^^^^^^
+
+**(1)创建配置(create):**
+
+
+`创建默认配置:`
+
+.. code-block:: bash
+
+    $ iclouder config create
+
+`指定配置配置文件:`
+
+.. code-block:: bash
+    $ iclouder config create --with-config filename
+    $ % or 
+    $ iclouder config create --with_config filename
+    $ % or
+    $ iclouder --with-config filename config create 
+
+
+**(2)打印和备份配置(print):**
+
+
+`打印配置:`
+
+.. code-block:: bash
+
+     $ iclouder config print
+     $ % or
+     $ iclouder config print --with-config filename %打印指定的配置文件
+
+
+`备份配置;`
+
+.. code-block:: bash
+     
+     $ iclouder config print --to-file backup_file
+     $ % or 备份指定的配置文件
+     $ iclouder config print --to-file backup_file --with-config filename 
+ 
+
+`同时打印和备份配置`
+
+.. code-block:: bash
+        
+     $ % 只需要指定参数--tee 即可
+     $ iclouder config print --to-file backup_file --tee
+
+
+2. replace(上传并替换图片)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+**(1)替换markdown文档中的图片(replace):**
+
+
+.. code-block:: bash
+
+     $ iclouder replace --in-file input.md --out-file output.md
+     $ % or 在原文件进行修改
+     $ iclouder replace --in-file input.md
+     $ % or 指定配置文件
+     $ iclouder replace --in-file input.md --with-config config_file
+ 
 
 
 LICENSE
